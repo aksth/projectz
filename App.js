@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import app from './firebase';
 import { writeUserData, getUserById } from './firebase/db';
 import Test from './components/test';
+import { loginWithFacebook, signOutFacebook } from './auth/fb';
 
 export default function App() {
   
@@ -13,7 +14,18 @@ export default function App() {
     <View style={styles.container}>
       <Test />
       <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <TouchableOpacity
+        onPress={loginWithFacebook}
+        style={{backgroundColor: 'lightskyblue', padding: 10, marginBottom: 10}}
+      >
+        <Text>Login with Facebook!</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={signOutFacebook}
+        style={{backgroundColor: 'wheat', padding: 10}}
+      >
+        <Text>Sign Out!</Text>
+      </TouchableOpacity>
     </View>
   );
 }

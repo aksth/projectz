@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "projectz",
-    "slug": "projectz",
+    "slug": "foodapp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,10 +21,12 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.swifeen.foodapp",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -34,6 +36,17 @@
         "expo-facebook",
         {
           "userTrackingPermission": false
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./local/assets/notification-icon.png",
+          "color": "#ffffff",
+          "sounds": [
+            "./local/assets/notification-sound.wav",
+            "./local/assets/notification-sound-other.wav"
+          ]
         }
       ]
     ]

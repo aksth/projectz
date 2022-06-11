@@ -1,5 +1,7 @@
 import * as Notifications from 'expo-notifications';
+
 import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
 import React, { useState, useEffect, useRef } from 'react';
 import { Text, View, Button, Platform } from 'react-native';
 
@@ -11,7 +13,7 @@ Notifications.setNotificationHandler({
   }),
 });
 
-function SettingsScreen() {
+export default function App() {
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
@@ -57,8 +59,6 @@ function SettingsScreen() {
     </View>
   );
 }
-
-export default SettingsScreen;
 
 async function schedulePushNotification() {
   await Notifications.scheduleNotificationAsync({

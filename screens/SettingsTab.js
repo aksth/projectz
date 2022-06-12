@@ -11,7 +11,7 @@ Notifications.setNotificationHandler({
   }),
 });
 
-function SettingsScreen() {
+function SettingsTab() {
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
@@ -58,7 +58,7 @@ function SettingsScreen() {
   );
 }
 
-export default SettingsScreen;
+export default SettingsTab;
 
 async function schedulePushNotification() {
   await Notifications.scheduleNotificationAsync({

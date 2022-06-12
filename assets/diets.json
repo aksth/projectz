@@ -1,0 +1,19 @@
+[
+  {
+    "id": 0,
+    "name": "Cuisines",
+    "children": [
+      { "name": "Gluten Free", "id": 1 },
+      { "name": "Ketogenic", "id": 2 },
+      { "name": "Vegetarian", "id": 3 },
+      { "name": "Lacto-Vegetarian", "id": 4 },
+      { "name": "Ovo-Vegetarian", "id": 5 },
+      { "name": "Vegan", "id": 6 },
+      { "name": "Pescetarian", "id": 7 },
+      { "name": "Paleo", "id": 8 },
+      { "name": "Primal", "id": 9 },
+      { "name": "Low FODMAP", "id": 10 },
+      { "name": "Whole30", "id": 11 }
+    ]
+  }
+]

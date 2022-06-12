@@ -1,0 +1,34 @@
+[
+  {
+    "id": 0,
+    "name": "Cuisines",
+    "children": [
+      { "name": "African", "id": 1 },
+      { "name": "American", "id": 2 },
+      { "name": "British", "id": 3 },
+      { "name": "Cajun", "id": 4 },
+      { "name": "Caribbean", "id": 5 },
+      { "name": "Chinese", "id": 6 },
+      { "name": "Eastern European", "id": 7 },
+      { "name": "European", "id": 8 },
+      { "name": "French", "id": 9 },
+      { "name": "German", "id": 10 },
+      { "name": "Greek", "id": 11 },
+      { "name": "Indian", "id": 12 },
+      { "name": "Irish", "id": 13 },
+      { "name": "Italian", "id": 14 },
+      { "name": "Japanese", "id": 15 },
+      { "name": "Jewish", "id": 16 },
+      { "name": "Korean", "id": 17 },
+      { "name": "Latin American", "id": 18 },
+      { "name": "Mediterranean", "id": 19 },
+      { "name": "Mexican", "id": 20 },
+      { "name": "Middle Eastern", "id": 21 },
+      { "name": "Nordic", "id": 22 },
+      { "name": "Southern", "id": 23 },
+      { "name": "Spanish", "id": 24 },
+      { "name": "Thai", "id": 25 },
+      { "name": "Vietnamese", "id": 26 }
+    ]
+  }
+]

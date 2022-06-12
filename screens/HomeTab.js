@@ -7,7 +7,7 @@ import { searchResponse } from '../api/spoonacular/testdata';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { getHsvColor } from '../styles/utils';
 
-function HomeScreen() {
+function HomeTab() {
 
   const [randomRecipes, setRandomRecipes] = useState(searchResponse);
 
@@ -107,4 +107,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default HomeTab;

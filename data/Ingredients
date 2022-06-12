@@ -1,0 +1,29 @@
+Ingredients
+
+cuisine,
+diet,
+ingredients
+
+Nutrition
+minCalories, maxCalories
+minCarbs, maxCarbs
+minProtein, maxProtein
+minFat, maxFat
+
+Other Nutrition
+minSugar
+minCholesterol
+minSaturatedFat
+minVitaminA
+minVitaminC
+minVitaminD
+minVitaminE
+minVitaminB1
+minFiber
+minIodine
+minIron
+minMagnesium
+minPhosphorus
+minPotassium
+minSodium
+minZinc

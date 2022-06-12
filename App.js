@@ -1,41 +1,64 @@
-
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet,TouchableOpacity,  } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { MyTheme } from './styles/theme';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import SearchResultScreen from './screens/SearchResultScreen';
-import MainTabs from './screens/MainTabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import HomeTab from './screens/HomeTab';
+import SettingsTab from './screens/SettingsTab';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'; 
+import BrowseTab from './screens/BrowseTab';
 
-TouchableOpacity.defaultProps = { 
+TouchableOpacity.defaultProps = {
   activeOpacity: 0.7,
 };
 
-const Stack = createStackNavigator();
+//const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App() {
+
   return (
     <SafeAreaProvider>
       <StatusBar backgroundColor={MyTheme.colors.primary} />
-{/*       <GestureHandlerRootView style={{ flex: 1 }}> */}
-        <NavigationContainer theme={MyTheme}>
-          <Stack.Navigator
-          screenOptions={
-            ({ route }) => ({
-              headerShown: false,
-            })}
-          >
-            <Stack.Screen name="MainTabs" component={MainTabs} />
-            <Stack.Screen name="SearchResultScreen" component={SearchResultScreen}
-              options={{
-                      title: 'Search Result',
-                      headerTitleAlign: 'center',
-                    }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      {/* </GestureHandlerRootView> */}
+      <NavigationContainer theme={MyTheme}>
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            headerShown: false,
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
+              if (route.name === 'Home') {
+                iconName = focused ? 'home' : 'home-outline';
+              } else if (route.name === 'Settings') {
+                iconName = focused ? 'settings' : 'settings-outline';
+              } else if (route.name === 'Browse') {
+                iconName = focused
+                  ? 'text-box-search'
+                  : 'text-box-search-outline';
+              }
+
+              // You can return any component that you like here!
+              if (route.name === 'Browse') {
+                return (
+                  <MaterialCommunityIcons
+                    name={iconName}
+                    size={size}
+                    color={color}
+                  />
+                );
+              } else {
+                return <Ionicons name={iconName} size={size} color={color} />;
+              }
+            },
+            tabBarActiveTintColor: MyTheme.colors.primary,
+            tabBarInactiveTintColor: MyTheme.colors.disabled,
+          })}
+        >
+          <Tab.Screen name='Home' component={HomeTab} />
+          <Tab.Screen name='Browse' component={BrowseTab} />
+          <Tab.Screen name='Settings' component={SettingsTab} />
+        </Tab.Navigator>
+      </NavigationContainer>
     </SafeAreaProvider>
   );
 }

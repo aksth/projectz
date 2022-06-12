@@ -2,7 +2,6 @@ export const getHsvColor = (percent) => {
   let color = 'rgb(244, 113, 113)';
   switch(true){
     case (percent < 10):
-      console.log("@#$#@$");
       color = 'rgb(244, 113, 113)';
       break;
     case (percent < 20):

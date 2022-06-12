@@ -1,65 +1,38 @@
-import { useEffect } from 'react';
+
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
-import app from './firebase';
-import { writeUserData, getUserById } from './firebase/db';
-import Test from './components/test';
-import { loginWithFacebook, signOutFacebook } from './auth/fb';
-import { searchRecipes } from './api/spoonacular/recipes';
-
+import { StyleSheet,TouchableOpacity,  } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'; 
-import HomeScreen from './screens/HomeScreen';
-import SettingsScreen from './screens/Settings';
 import { MyTheme } from './styles/theme';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import BrowseScreen from './screens/BrowseScreen';
+//import SearchResultScreen from './screens/SearchResultScreen';
+import MainTabs from './screens/MainTabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
+TouchableOpacity.defaultProps = { 
+  activeOpacity: 0.7,
+};
 
-const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <SafeAreaProvider>
-      <NavigationContainer theme={MyTheme}>
       <StatusBar backgroundColor={MyTheme.colors.primary} />
-        <Tab.Navigator
-          screenOptions={
-            ({ route }) => ({
-              headerShown: false,
-              tabBarIcon: ({ focused, color, size }) => {
-                let iconName;
-
-                if (route.name === 'Home') {
-                  iconName = focused
-                    ? 'home'
-                    : 'home-outline';
-                } else if (route.name === 'Settings') {
-                  iconName = focused ? 'settings' : 'settings-outline';
-                } else if (route.name === 'Browse') {
-                  iconName = focused ? 'text-box-search' : 'text-box-search-outline';
-                }
-
-                // You can return any component that you like here!
-                if(route.name === 'Browse') {
-                  return (<MaterialCommunityIcons name={iconName} size={size} color={color} />);
-                } else {
-                  return (<Ionicons name={iconName} size={size} color={color} />);
-                }
-              },
-              tabBarActiveTintColor: MyTheme.colors.primary,
-              tabBarInactiveTintColor: MyTheme.colors.disabled,
-            })}
-        >
-          <Tab.Screen name="Home" component={HomeScreen} />
-          <Tab.Screen name="Browse" component={BrowseScreen} />
-          <Tab.Screen name="Settings" component={SettingsScreen} />
-        </Tab.Navigator>
-      </NavigationContainer>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <NavigationContainer theme={MyTheme}>
+          <Stack.Navigator>
+            <Stack.Screen name="MainTabs" component={MainTabs} />
+            {/* <Stack.Screen name="SearchResultScreen" component={SearchResultScreen}
+              options={{
+                      title: 'Search Result',
+                      headerTitleAlign: 'center',
+                    }}
+            /> */}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </GestureHandlerRootView>
     </SafeAreaProvider>
-    
   );
 }
 

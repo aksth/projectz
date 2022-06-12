@@ -4,6 +4,7 @@ import { MyTheme } from '../styles/theme';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { searchRecipes } from '../api/spoonacular/recipes';
+import RecipeList from '../components/RecipeList';
 
 const SearchResultScreen = ({route, navigation}) => {
 
@@ -37,21 +38,14 @@ const SearchResultScreen = ({route, navigation}) => {
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => 
-            navigation.navigate("Browse")}
+            navigation.navigate("BrowseScreen")}
           style={styles.buttonLeft}
         >
           <Ionicons name='arrow-back-circle' size={36} color={MyTheme.colors.primary}/>
         </TouchableOpacity>
         <Text style={styles.headerText}>{pagination.totalResults} results found...</Text>
       </View>
-      <ScrollView style={styles.scrollContainer}>
-        {resultState.loading && (
-          <View style={styles.loading}>
-            <ActivityIndicator size='large' color={MyTheme.colors.primary}/>
-          </View>
-        )}
-      </ScrollView>
-      
+      <RecipeList recipes={result} loading={resultState.loading} showHeader={false}/>
     </SafeAreaView>
   );
 

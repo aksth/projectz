@@ -1,5 +1,5 @@
 import { Text, View, FlatList, Pressable, StyleSheet, Image } from 'react-native';
-import { getRecipeImageLarge, searchRecipes } from '../api/spoonacular/recipes';
+import { getRecipeImageLarge } from '../api/spoonacular/recipes';
 import { useState, useEffect } from 'react';
 import { MyTheme } from '../styles/theme';
 import { SafeAreaView } from 'react-native-safe-area-context';

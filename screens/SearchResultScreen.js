@@ -1,12 +1,16 @@
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { MyTheme } from '../styles/theme';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
+import { searchRecipes } from '../api/spoonacular/recipes';
 
 const SearchResultScreen = ({route, navigation}) => {
 
   const [pagination, setPagination] = useState({
     currentPage: 1,
+    offset: 0,
+    totalResults: 0,
   });
 
   const [resultState, setResultState] = useState({
@@ -17,48 +21,51 @@ const SearchResultScreen = ({route, navigation}) => {
   
   const [searchParams, setSearchParams] = useState(route.params.searchParams);
 
-  /* searchRecipes(searchParams, (data) => {
-
-    }); */
+  const [result, setResult] = useState([]);
     
   useEffect(() => {
-    console.log(searchParams);
-    /* navigation.setOptions({
-      headerLeft: () => (
+    setResultState({loading: true, success: false, error: false});
+    searchRecipes({...searchParams, offset: pagination.offset}, (data) => {
+      setResultState({loading: false, success: true, error: false});
+      setResult(data.results);
+      setPagination({...pagination, totalResults: data.totalResults})
+    });
+  }, []);
+
+  return (
+    <SafeAreaView style={styles.screenContainer}>
+      <View style={styles.header}>
         <TouchableOpacity
           onPress={() => 
             navigation.navigate("Browse")}
           style={styles.buttonLeft}
         >
-          <Text style={styles.buttonText}>Back</Text>
+          <Ionicons name='arrow-back-circle' size={36} color={MyTheme.colors.primary}/>
         </TouchableOpacity>
-      ),
-    }); */
-  });
-
-  return (
-    <SafeAreaView style={styles.screenContainer}>
+        <Text style={styles.headerText}>{pagination.totalResults} results found...</Text>
+      </View>
       <ScrollView style={styles.scrollContainer}>
-      </ScrollView>
-      <Text>Hello</Text>
-      {resultState.loading && (
+        {resultState.loading && (
           <View style={styles.loading}>
             <ActivityIndicator size='large' color={MyTheme.colors.primary}/>
           </View>
         )}
+      </ScrollView>
+      
     </SafeAreaView>
   );
 
 };
 
 const styles = StyleSheet.create({
-  buttonLeft: {
-    paddingLeft: 15,
+  header: {
+    margin: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  buttonText: {
-    fontSize: 18,
-    color: MyTheme.colors.text,
-    fontWeight: "bold",
+  headerText: {
+    fontSize: 16,
+    marginLeft: 8
   },
   screenContainer: {
     flex: 1,

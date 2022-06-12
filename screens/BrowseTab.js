@@ -86,7 +86,7 @@ function BrowseTab({route, navigation}) {
       ...(state.maxFat && {maxFat: state.maxFat}),
     }
 
-    navigation.navigate("SearchResult", {
+    navigation.navigate("SearchResultScreen", {
       'searchParams': searchParams,
     })
 

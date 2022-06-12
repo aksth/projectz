@@ -5,7 +5,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'; 
 import HomeTab from './HomeTab';
 import SettingsTab from './SettingsTab';
-//import BrowseTab from './BrowseTab';
+import BrowseTab from './BrowseTab';
 
 const Tab = createBottomTabNavigator();
 
@@ -41,7 +41,7 @@ export default function MainTabs() {
             })}
         >
           <Tab.Screen name="Home" component={HomeTab} />
-          {/* <Tab.Screen name="Browse" component={BrowseTab} /> */}
+          <Tab.Screen name="Browse" component={BrowseTab} />
           <Tab.Screen name="Settings" component={SettingsTab} />
         </Tab.Navigator>
     </SafeAreaProvider>

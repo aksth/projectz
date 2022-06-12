@@ -4,10 +4,9 @@ import { StyleSheet,TouchableOpacity,  } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { MyTheme } from './styles/theme';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-//import SearchResultScreen from './screens/SearchResultScreen';
+import SearchResultScreen from './screens/SearchResultScreen';
 import MainTabs from './screens/MainTabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 TouchableOpacity.defaultProps = { 
   activeOpacity: 0.7,
@@ -19,19 +18,24 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <StatusBar backgroundColor={MyTheme.colors.primary} />
-      <GestureHandlerRootView style={{ flex: 1 }}>
+{/*       <GestureHandlerRootView style={{ flex: 1 }}> */}
         <NavigationContainer theme={MyTheme}>
-          <Stack.Navigator>
+          <Stack.Navigator
+          screenOptions={
+            ({ route }) => ({
+              headerShown: false,
+            })}
+          >
             <Stack.Screen name="MainTabs" component={MainTabs} />
-            {/* <Stack.Screen name="SearchResultScreen" component={SearchResultScreen}
+            <Stack.Screen name="SearchResultScreen" component={SearchResultScreen}
               options={{
                       title: 'Search Result',
                       headerTitleAlign: 'center',
                     }}
-            /> */}
+            />
           </Stack.Navigator>
         </NavigationContainer>
-      </GestureHandlerRootView>
+      {/* </GestureHandlerRootView> */}
     </SafeAreaProvider>
   );
 }

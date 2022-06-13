@@ -19,8 +19,9 @@ const firebaseConfig = {
   measurementId: "G-36YLMLF8K9"
 };
 
-console.log("##########################################################");
+const initializeDb = () => {
+  console.log("Initialize Firebase Db");
+  initializeApp(firebaseConfig);
+}
 
-const app = initializeApp(firebaseConfig);
-
-export default app;
+export { initializeDb };

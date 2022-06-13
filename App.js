@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -9,6 +10,7 @@ import SettingsTab from './screens/SettingsTab';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'; 
 import BrowseTab from './screens/BrowseTab';
 import MealPlanTab from './screens/MealPlanTab';
+import { initializeDb } from './firebase';
 
 TouchableOpacity.defaultProps = {
   activeOpacity: 0.7,
@@ -17,6 +19,14 @@ TouchableOpacity.defaultProps = {
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+
+  useEffect(() => {
+    try {
+      initializeDb();
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
 
   return (
     <SafeAreaProvider>
@@ -76,20 +86,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
-/* <View style={styles.container}>
-      <Test />
-      <Text>Open up App.js to start working on your app!</Text>
-      <TouchableOpacity
-        onPress={loginWithFacebook}
-        style={{backgroundColor: 'lightskyblue', padding: 10, marginBottom: 10}}
-      >
-        <Text>Login with Facebook!</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={signOutFacebook}
-        style={{backgroundColor: 'wheat', padding: 10}}
-      >
-        <Text>Sign Out!</Text>
-      </TouchableOpacity>
-    </View> */

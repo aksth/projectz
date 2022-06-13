@@ -29,7 +29,7 @@ async function loginWithFacebook() {
 
   if (type === 'success') {
 
-    console.log("####### login success ########");
+    console.log("####### faceook app login success ########");
     console.log(token);
 
     // Build Firebase credential with the Facebook access token.
@@ -38,6 +38,7 @@ async function loginWithFacebook() {
 
     // Sign in with credential from the Facebook user.
     signInWithCredential(auth, credential).catch(error => {
+      console.log(error);
       // Handle Errors here.
     });
   } else {

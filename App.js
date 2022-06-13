@@ -8,19 +8,19 @@ import HomeTab from './screens/HomeTab';
 import SettingsTab from './screens/SettingsTab';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'; 
 import BrowseTab from './screens/BrowseTab';
+import MealPlanTab from './screens/MealPlanTab';
 
 TouchableOpacity.defaultProps = {
   activeOpacity: 0.7,
 };
 
-//const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
 
   return (
     <SafeAreaProvider>
-      <StatusBar backgroundColor={MyTheme.colors.primary} />
+      <StatusBar backgroundColor={MyTheme.colors.background} />
       <NavigationContainer theme={MyTheme}>
         <Tab.Navigator
           screenOptions={({ route }) => ({
@@ -35,6 +35,10 @@ export default function App() {
                 iconName = focused
                   ? 'text-box-search'
                   : 'text-box-search-outline';
+              } else if (route.name === 'Meal Plan') {
+                iconName = focused
+                  ? 'restaurant'
+                  : 'restaurant-outline';
               }
 
               // You can return any component that you like here!
@@ -56,6 +60,7 @@ export default function App() {
         >
           <Tab.Screen name='Home' component={HomeTab} />
           <Tab.Screen name='Browse' component={BrowseTab} />
+          <Tab.Screen name='Meal Plan' component={MealPlanTab} />
           <Tab.Screen name='Settings' component={SettingsTab} />
         </Tab.Navigator>
       </NavigationContainer>

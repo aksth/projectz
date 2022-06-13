@@ -1,8 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import BrowseScreen from './BrowseScreen';
-import HomeTab from './HomeTab';
+import RecipeScreen from './RecipeScreen';
 import SearchResultScreen from './SearchResultScreen';
-
 
 const Stack = createStackNavigator();
 
@@ -16,6 +15,7 @@ export default function BrowseTab() {
     >
       <Stack.Screen name="BrowseScreen" component={BrowseScreen} />
       <Stack.Screen name="SearchResultScreen" component={SearchResultScreen}/>
+      <Stack.Screen name="RecipeScreen" component={RecipeScreen}/>
     </Stack.Navigator>
   );
 };

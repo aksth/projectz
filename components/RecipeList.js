@@ -4,22 +4,27 @@ import { MyTheme } from '../styles/theme';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { getHsvColor } from '../styles/utils';
 import { getRecipeImageLarge } from '../api/spoonacular/recipes';
+import { useNavigation } from '@react-navigation/native';
 
 const RecipeList = (props) => {
+
+  const navigation = useNavigation();
 
   const renderRecipeItem = ({index, item}) => {
     return (
       <View>
         <Pressable
-          onPress={() => true
+          onPress={() => {
+            navigation.navigate("RecipeScreen", {
+              recipeId: item.id,
+            });
+          }
           }
           style={({ pressed }) => [
             {
-              /*
               backgroundColor: pressed
-                ? MyTheme.colors.background
+                ? 'whitesmoke'
                 : MyTheme.colors.background
-                */
             }
           ]}>
             <View style={styles.listItemContainer}>

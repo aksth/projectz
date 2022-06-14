@@ -1,11 +1,16 @@
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity, ActivityIndicator, Image, Modal } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { MyTheme } from '../styles/theme';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import { testdaterecipe } from '../api/spoonacular/testdatarecipe';
 import { getRecipeImageLarge } from '../api/spoonacular/recipes';
 import { getHsvColor } from '../styles/utils';
+import {
+  getAuth,
+  onAuthStateChanged,
+} from 'firebase/auth';
+import { getValueFromStore } from '../storage/store';
 
 const RecipeScreen = ({route, navigation}) => {
 
@@ -18,15 +23,35 @@ const RecipeScreen = ({route, navigation}) => {
   });
 
   const [recipe, setRecipe] = useState(testdaterecipe);
+
+  const [loggedIn, setLoggedIn] = useState(false);
     
   useEffect(() => {
+    
     /* setResultState({loading: true, success: false, error: false});
     searchRecipes({...searchParams, offset: pagination.offset}, (data) => {
       setResultState({loading: false, success: true, error: false});
       setResult(data.results);
       setPagination({...pagination, totalResults: data.totalResults})
     }); */
+
   }, []);
+  
+  useEffect(() => {
+
+    const unsubscribe = navigation.addListener('focus', () => {
+      getValueFromStore('loggedIn', (value) => {
+        console.log(value);
+        setLoggedIn((value === 'true'))
+      });
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+
+  }, [navigation]);
+
+
 
   const renderIngredients = () => {
     const ingredients = [];
@@ -92,11 +117,19 @@ const RecipeScreen = ({route, navigation}) => {
           onPress={() => 
             navigation.goBack()
             }
-          style={styles.buttonLeft}
         >
           <Ionicons name='arrow-back-circle' size={36} color={MyTheme.colors.primary}/>
         </TouchableOpacity>
         <Text style={styles.headerText}>{recipe.title}</Text>
+        {loggedIn &&
+        <TouchableOpacity
+          onPress={() => 
+            navigation.goBack()
+            }
+        >
+          <Entypo name='add-to-list' size={30} color={MyTheme.colors.primary}/>
+        </TouchableOpacity>
+        }
       </View>
       <ScrollView style={styles.scrollContainer}>
         {/* Image */}
@@ -152,6 +185,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginLeft: 8,
     fontWeight: 'bold',
+    width: '100%',
+    flex: 1,
   },
   screenContainer: {
     flex: 1,

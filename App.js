@@ -13,6 +13,7 @@ import MealPlanTab from './screens/MealPlanTab';
 import { initializeDb } from './firebase';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
+import { saveToStore } from './storage/store';
 
 TouchableOpacity.defaultProps = {
   activeOpacity: 0.7,
@@ -145,6 +146,7 @@ async function registerForPushNotificationsAsync() {
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
     console.log(token);
+    await saveToStore('exponentPushToken', token);
   } else {
     alert('Must use physical device for Push Notifications');
   }

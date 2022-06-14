@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { loginWithFacebook, signOutFacebook } from '../auth/fb';
-import { getValueFromStore } from '../storage/store';
+import { getValueFromStore, getAllValues } from '../storage/store';
+import { useFocusEffect } from '@react-navigation/native';
+import { writeLoginDataToDb } from '../firebase/db';
 
-function SettingsTab() {
+function SettingsTab({route, navigation}) {
 
   const [state, setState] = useState({
     loggedIn: false,
@@ -12,37 +14,34 @@ function SettingsTab() {
     fullName: '',
     oauthAccessToken: '',
     photoUrl: '',
+    exponentPushToken: '',
   });
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getAllValues((values) => {
+        //console.log(values)
+        setState({...state, ...values});
+      });
+      return;
+    }, [])
+  );
 
   const login = () => {
     loginWithFacebook(() => {
-      getValue();
+      getAllValues((values) => {
+        //console.log(values);
+        setState({...state, ...values});
+        writeLoginDataToDb(values.email, values.fullName, values.photoUrl, values.exponentPushToken);
+      });
     })
   }
 
   const signOut = () => {
     signOutFacebook(() => {
-      setState({loggedIn: false, email: '', fullName: '', oauthAccessToken: '', photoUrl: ''});
+      setState({loggedIn: false, email: '', fullName: '', oauthAccessToken: '', photoUrl: '', exponentPushToken: ''});
     });
   };
-
-  const getValue = async () => {
-    let val = {...state, loggedIn: true};
-    await getValueFromStore('email', (value) => {
-      val = {...val, email: value};
-    });
-    await getValueFromStore('fullName', (value) => {
-      val = {...val, fullName: value};
-    });
-    await getValueFromStore('oauthAccessToken', (value) => {
-      val = {...val, oauthAccessToken: value};
-    });
-    await getValueFromStore('photoUrl', (value) => {
-      val = {...val, photoUrl: value+'?width=200&height=200&access_token='+val.oauthAccessToken};
-      console.log(val);
-    });
-    setState({...state, ...val});
-  }
 
   return (
     <SafeAreaView style={styles.screenContainer}>

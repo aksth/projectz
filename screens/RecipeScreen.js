@@ -6,10 +6,6 @@ import { Ionicons, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import { testdaterecipe } from '../api/spoonacular/testdatarecipe';
 import { getRecipeImageLarge } from '../api/spoonacular/recipes';
 import { getHsvColor } from '../styles/utils';
-import {
-  getAuth,
-  onAuthStateChanged,
-} from 'firebase/auth';
 import { getValueFromStore } from '../storage/store';
 
 const RecipeScreen = ({route, navigation}) => {
@@ -41,7 +37,6 @@ const RecipeScreen = ({route, navigation}) => {
 
     const unsubscribe = navigation.addListener('focus', () => {
       getValueFromStore('loggedIn', (value) => {
-        console.log(value);
         setLoggedIn((value === 'true'))
       });
     });
@@ -56,15 +51,17 @@ const RecipeScreen = ({route, navigation}) => {
   const renderIngredients = () => {
     const ingredients = [];
     for(let ingredient of recipe.extendedIngredients) {
-      ingredients.push(<Text style={styles.ingredientText}>{ingredient.original}</Text>);
+      ingredients.push(<Text key={ingredient.id} style={styles.ingredientText}>{ingredient.original}</Text>);
     }
     return ingredients;
   }
   
   const renderInstructions = () => {
     const instructions = [];
+    let count = 1;
     for(let instruction of recipe.analyzedInstructions[0].steps) {
-      instructions.push(<Text style={styles.instructionText}>{instruction.step}</Text>);
+      instructions.push(<Text key={count} style={styles.instructionText}>{instruction.step}</Text>);
+      count++;
     }
     return instructions;
   }
@@ -72,8 +69,10 @@ const RecipeScreen = ({route, navigation}) => {
   const renderDiets = () => {
     if(recipe.diets.length <= 0) return;
     const diets = [];
+    let count = 100;
     for(let diet of recipe.diets) {
-      diets.push(<Text style={{...styles.tagText, marginRight: 10}}>{diet}</Text>);
+      diets.push(<Text key={count} style={{...styles.tagText, marginRight: 10}}>{diet}</Text>);
+      count++;
     }
     return (
       <View style={{flex: 1}}>
@@ -88,8 +87,10 @@ const RecipeScreen = ({route, navigation}) => {
   const renderCuisines = () => {
     if(recipe.cuisines.length <= 0) return;
     const cuisines = [];
+    let count = 200;
     for(let cuisine of recipe.cuisines) {
-      cuisines.push(<Text style={{...styles.tagText, marginLeft: 10}}>{cuisine}</Text>);
+      cuisines.push(<Text key={count} style={{...styles.tagText, marginLeft: 10}}>{cuisine}</Text>);
+      count++;
     }
     return (
       <View style={{flex: 1}}>

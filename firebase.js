@@ -20,8 +20,9 @@ const firebaseConfig = {
 };
 
 const initializeDb = () => {
-  console.log("Initialize Firebase Db");
+  console.log("Initializing Firebase App");
   initializeApp(firebaseConfig);
+  console.log("Initialized Firebase App");
 }
 
 export { initializeDb };

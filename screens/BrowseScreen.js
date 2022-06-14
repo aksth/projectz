@@ -11,12 +11,6 @@ import { useState, useEffect } from 'react';
 import { Input } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import {
-  Collapse,
-  CollapseHeader,
-  CollapseBody,
-  AccordionList,
-} from 'accordion-collapse-react-native';
 import MultiSelector from '../components/MultiSelector';
 import { MyTheme } from '../styles/theme';
 

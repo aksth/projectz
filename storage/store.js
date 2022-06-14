@@ -11,7 +11,7 @@ async function getValueFromStore(key, callback) {
     callback(result);
   } else {
     console.log("Error getting value from store (getValueFromStore)");
-    return;
+    callback(null);
   }
 }
 

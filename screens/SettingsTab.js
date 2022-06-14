@@ -1,103 +1,103 @@
-import * as Notifications from 'expo-notifications';
-import * as Device from 'expo-device';
-import React, { useState, useEffect, useRef } from 'react';
-import { Text, View, Button, Platform } from 'react-native';
-
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
-});
+import React, { useState } from 'react';
+import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { loginWithFacebook, signOutFacebook } from '../auth/fb';
+import { getValueFromStore } from '../storage/store';
 
 function SettingsTab() {
-  const [expoPushToken, setExpoPushToken] = useState('');
-  const [notification, setNotification] = useState(false);
-  const notificationListener = useRef();
-  const responseListener = useRef();
 
-  useEffect(() => {
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+  const [state, setState] = useState({
+    loggedIn: false,
+    email: '',
+    fullName: '',
+    oauthAccessToken: '',
+    photoUrl: '',
+  });
 
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      setNotification(notification);
+  const login = () => {
+    loginWithFacebook(() => {
+      getValue();
+    })
+  }
+
+  const signOut = () => {
+    signOutFacebook(() => {
+      setState({loggedIn: false, email: '', fullName: '', oauthAccessToken: '', photoUrl: ''});
     });
+  };
 
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
+  const getValue = async () => {
+    let val = {...state, loggedIn: true};
+    await getValueFromStore('email', (value) => {
+      val = {...val, email: value};
     });
-
-    return () => {
-      Notifications.removeNotificationSubscription(notificationListener.current);
-      Notifications.removeNotificationSubscription(responseListener.current);
-    };
-  }, []);
+    await getValueFromStore('fullName', (value) => {
+      val = {...val, fullName: value};
+    });
+    await getValueFromStore('oauthAccessToken', (value) => {
+      val = {...val, oauthAccessToken: value};
+    });
+    await getValueFromStore('photoUrl', (value) => {
+      val = {...val, photoUrl: value+'?width=200&height=200&access_token='+val.oauthAccessToken};
+      console.log(val);
+    });
+    setState({...state, ...val});
+  }
 
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'space-around',
-      }}
-    >
-      <Text>Your expo push token: {expoPushToken}</Text>
-      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Title: {notification && notification.request.content.title} </Text>
-        <Text>Body: {notification && notification.request.content.body}</Text>
-        <Text>Data: {notification && JSON.stringify(notification.request.content.data)}</Text>
+    <SafeAreaView style={styles.screenContainer}>
+      <View>
+        {state.loggedIn &&
+        <View>
+          <Image
+            style={{width: 100, height: 100, alignSelf: 'center', borderRadius: 10}}
+            source={{uri: decodeURIComponent(state.photoUrl)}}
+          />
+          <Text style={{alignSelf: 'center'}}>Full Name: {state.fullName}</Text>
+          <Text style={{alignSelf: 'center'}}>Email: {state.email}</Text>
+        </View>        
+        }
+        {!state.loggedIn &&
+        <View style={{alignItems: 'center', backgroundColor: '#1877f2', borderRadius: 15}}>
+          <TouchableOpacity
+          onPress={login}
+          style={{paddingRight: 20, flexDirection: 'row', alignItems: 'center'}}
+          >
+            <Image
+            style={{width: 50, height: 50}}
+            source={require('../assets/fb-logo.png')}
+            />
+            <Text style={{color: 'white'}}>Login with Facebook!</Text>
+          </TouchableOpacity>
+        </View>
+        }
+        {state.loggedIn &&
+        <TouchableOpacity
+          onPress={signOut}
+          style={{backgroundColor: 'wheat', padding: 10, alignItems: 'center'}}
+        >
+          <Text style={{}}>Sign Out!</Text>
+        </TouchableOpacity>
+        }
       </View>
-      <Button
-        title="Press to schedule a notification"
-        onPress={async () => {
-          await schedulePushNotification();
-        }}
-      />
-    </View>
+    </SafeAreaView>
   );
+
 }
 
 export default SettingsTab;
 
-async function schedulePushNotification() {
-  await Notifications.scheduleNotificationAsync({
-    content: {
-      title: "You've got mail! 📬",
-      body: 'Here is the notification body',
-      data: { data: 'goes here' },
-    },
-    trigger: { seconds: 2 },
-  });
-}
+const styles = StyleSheet.create({
+  screenContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 
-async function registerForPushNotificationsAsync() {
-  let token;
-  if (Device.isDevice) {
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-    if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-    if (finalStatus !== 'granted') {
-      alert('Failed to get push token for push notification!');
-      return;
-    }
-    token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
-  } else {
-    alert('Must use physical device for Push Notifications');
-  }
-
-  if (Platform.OS === 'android') {
-    Notifications.setNotificationChannelAsync('default', {
-      name: 'default',
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#FF231F7C',
-    });
-  }
-
-  return token;
-}
+/* <TouchableOpacity
+          onPress={getValue}
+          style={{backgroundColor: 'lightgreen', padding: 10, marginBottom: 50, marginTop: 50}}
+        >
+          <Text>Get Values</Text>
+        </TouchableOpacity> */

@@ -8,15 +8,6 @@ import {
 import * as Facebook from 'expo-facebook';
 import { removeFromStore, saveToStore } from '../storage/store';
 
-/* // Listen for authentication state to change.
-onAuthStateChanged(auth, user => {
-  if (user != null) {
-    console.log('We are authenticated now!');
-    //console.log(user);
-  }
-  // Do other things
-}); */
-
 async function loginWithFacebook(callback) {
 
   const auth = getAuth();
@@ -47,6 +38,8 @@ async function loginWithFacebook(callback) {
     await saveToStore('loggedIn', 'true');
     await saveToStore('idToken', userCredential._tokenResponse.idToken);
     await saveToStore('fullName', userCredential._tokenResponse.fullName);
+    await saveToStore('oauthAccessToken', userCredential._tokenResponse.oauthAccessToken);
+    await saveToStore('photoUrl', encodeURIComponent(userCredential._tokenResponse.photoUrl));
     callback();
   } else {
     console.log('facebook login error.');
@@ -62,6 +55,8 @@ async function signOutFacebook(callback) {
     removeFromStore('loggedIn');
     removeFromStore('idToken');
     removeFromStore('fullName');
+    removeFromStore('oauthAccessToken');
+    removeFromStore('photoUrl');
     callback();
   }).catch((error) => {
     // An error happened.

@@ -39,7 +39,8 @@ async function loginWithFacebook(callback) {
     await saveToStore('idToken', userCredential._tokenResponse.idToken);
     await saveToStore('fullName', userCredential._tokenResponse.fullName);
     await saveToStore('oauthAccessToken', userCredential._tokenResponse.oauthAccessToken);
-    await saveToStore('photoUrl', encodeURIComponent(userCredential._tokenResponse.photoUrl));
+    await saveToStore('photoUrl', encodeURIComponent(userCredential._tokenResponse.photoUrl)+
+          '?width=200&height=200&access_token='+userCredential._tokenResponse.oauthAccessToken);
     callback();
   } else {
     console.log('facebook login error.');
@@ -57,6 +58,7 @@ async function signOutFacebook(callback) {
     removeFromStore('fullName');
     removeFromStore('oauthAccessToken');
     removeFromStore('photoUrl');
+    removeFromStore('exponentPushToken');
     callback();
   }).catch((error) => {
     // An error happened.

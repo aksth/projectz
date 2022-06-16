@@ -63,6 +63,10 @@ const RecipeList = (props) => {
     );
   }
 
+  const loadMore = () => {
+    props.onLoadMore();
+  }
+
   return (
     <FlatList 
       data={props.recipes}
@@ -70,6 +74,8 @@ const RecipeList = (props) => {
       nestedScrollEnabled
       ListHeaderComponent={props.showHeader ? renderHeaderImage() : null}
       ListFooterComponent={renderFooter()}
+      onEndReachedThreshold={0.01}
+      onEndReached={loadMore}
     />
   );
 

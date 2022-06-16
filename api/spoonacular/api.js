@@ -7,7 +7,7 @@ const api = axios.create({
 api.interceptors.request.use(
   async (config) => {
     config.headers.Accept = 'application/json';
-    config.params = {...config.params, apiKey: '80b638558a6842fabc2a3316e3bcff8e'}
+    config.params = {...config.params, apiKey: 'spoonacularapikeyremoved'}
     return config;
   },
   (err) => {

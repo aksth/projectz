@@ -9,7 +9,7 @@ import { initializeApp } from 'firebase/app';
 
 // Initialize Firebase
 const firebaseConfig = {
-  apiKey: "googleapikeyremoved",
+  apiKey: "AIzaSyARMF6mRawj1Q7DX7WFBL4wmMWrr6_egvo",
   authDomain: "projectz-5f4d9.firebaseapp.com",
   databaseURL: "https://projectz-5f4d9-default-rtdb.firebaseio.com",
   projectId: "projectz-5f4d9",

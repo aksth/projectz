@@ -3,6 +3,7 @@ import Toast from 'react-native-root-toast';
 
 export const searchRecipes = async (searchParams, callback) => {
   //await new Promise(r => setTimeout(r, 5000));
+  console.log("calling search recipes... " + new Date());
   try{
     const response = await api.get('/recipes/complexSearch', 
     { 
@@ -24,6 +25,7 @@ export const searchRecipes = async (searchParams, callback) => {
 };
 
 export const getRecipeById = async (id, callback) => {
+  console.log("calling get recipe by id... " + new Date());
   //await new Promise(r => setTimeout(r, 5000));
   try{
     const response = await api.get(`/recipes/${id}/information`, 

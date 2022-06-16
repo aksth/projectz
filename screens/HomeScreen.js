@@ -68,7 +68,8 @@ function HomeScreen() {
         const newResult = [...randomRecipes, ...data.results]
         setRandomRecipes(newResult);
         setResultState({loading: false, success: true, error: false});
-        const end = newResult.length >= pagination.totalResults;
+        console.log(newResult.length, data.totalResults);
+        const end = newResult.length >= data.totalResults;
         setPagination({currentPage: pagination.currentPage + 1, totalResults: data.totalResults, end: end})
       });
     } catch (err) {

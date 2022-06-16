@@ -64,6 +64,7 @@ const RecipeList = (props) => {
   }
 
   const loadMore = () => {
+    console.log("loading more...");
     if(props.end) {
       return;
     } else {

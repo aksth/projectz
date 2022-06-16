@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { MyTheme } from '../styles/theme';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 export default class MultiSelector extends Component {
-  
   constructor(props) {
     super(props);
     this.state = {
@@ -42,7 +41,13 @@ export default class MultiSelector extends Component {
             searchPlaceholderTextColor: MyTheme.colors.text,
             chipColor: MyTheme.colors.primary,
           }}
-          styles={{selectToggle: {paddingTop: 15, paddingBottom: 5,}}}
+          styles={{
+            selectToggle: { paddingTop: 15, paddingBottom: 5 },
+            selectedSubItemText: { color: MyTheme.colors.primary },
+          }}
+          selectedIconComponent={
+            <Ionicons name="checkmark-sharp" size={22} color={MyTheme.colors.primary} />
+          }
         />
       </View>
     );

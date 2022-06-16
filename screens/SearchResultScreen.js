@@ -32,7 +32,8 @@ const SearchResultScreen = ({route, navigation}) => {
         setResultState({loading: false, success: true, error: false});
         const newResult = [...result, ...data.results];
         setResult(newResult);
-        const end = newResult.length >= pagination.totalResults;
+        console.log(newResult.length, data.totalResults);
+        const end = newResult.length >= data.totalResults;
         setPagination({currentPage: pagination.currentPage + 1, totalResults: data.totalResults, end: end})
       });
     } catch (err) {
@@ -66,7 +67,7 @@ const SearchResultScreen = ({route, navigation}) => {
         </TouchableOpacity>
         <Text style={styles.headerText}>{resultState.loading ? 'searching...' : pagination.totalResults + ' results found...'}</Text>
       </View>
-      <RecipeList recipes={result} loading={resultState.loading} showHeader={false} onLoadMore={loadMore} end={end}/>
+      <RecipeList recipes={result} loading={resultState.loading} showHeader={false} onLoadMore={loadMore} end={pagination.end}/>
     </SafeAreaView>
   );
 

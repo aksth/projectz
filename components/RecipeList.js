@@ -56,7 +56,7 @@ const RecipeList = (props) => {
   const renderFooter = () => {
     return (
       props.loading && (
-        <View>
+        <View style={{marginVertical: 20}}>
           <ActivityIndicator size='large' color={MyTheme.colors.primary}/>
         </View>
       )

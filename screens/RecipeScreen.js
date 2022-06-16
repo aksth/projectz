@@ -3,14 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { MyTheme } from '../styles/theme';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
-import { testdaterecipe } from '../api/spoonacular/testdatarecipe';
-import { getRecipeImageLarge } from '../api/spoonacular/recipes';
+//import { testdaterecipe } from '../api/spoonacular/testdatarecipe';
+import { getRecipeById, getRecipeImageLarge } from '../api/spoonacular/recipes';
 import { getHsvColor } from '../styles/utils';
-import { getValueFromStore } from '../storage/store';
+import { getAllValues } from '../storage/store';
+import { updateMealPlan } from '../firebase/db';
 
 const RecipeScreen = ({route, navigation}) => {
-
-  //console.log(route.params.recipeId);
 
   const [resultState, setResultState] = useState({
     loading: false,
@@ -18,26 +17,40 @@ const RecipeScreen = ({route, navigation}) => {
     error: false,
   });
 
-  const [recipe, setRecipe] = useState(testdaterecipe);
+  const [recipe, setRecipe] = useState({
+    id: '',
+    title: '',
+    healthScore: '',
+    extendedIngredients: [],
+    analyzedInstructions: [],
+    diets: [],
+    cuisines: [],
+    nutrition: {
+      nutrients: [],
+    }
+  });
 
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [sessionData, setSessionData] = useState({
+    loggedIn: false,
+    email: '',
+  });
     
   useEffect(() => {
-    
-    /* setResultState({loading: true, success: false, error: false});
-    searchRecipes({...searchParams, offset: pagination.offset}, (data) => {
+    setResultState({loading: true, success: false, error: false});
+    getRecipeById(route.params.recipeId, (data) => {
       setResultState({loading: false, success: true, error: false});
-      setResult(data.results);
-      setPagination({...pagination, totalResults: data.totalResults})
-    }); */
-
+      setRecipe(data);
+    });
   }, []);
   
   useEffect(() => {
 
     const unsubscribe = navigation.addListener('focus', () => {
-      getValueFromStore('loggedIn', (value) => {
-        setLoggedIn((value === 'true'))
+      getAllValues((values) => {
+        setSessionData({
+          loggedIn: values.loggedIn,
+          email: values.email,
+        });
       });
     });
 
@@ -45,8 +58,6 @@ const RecipeScreen = ({route, navigation}) => {
     return unsubscribe;
 
   }, [navigation]);
-
-
 
   const renderIngredients = () => {
     const ingredients = [];
@@ -71,13 +82,13 @@ const RecipeScreen = ({route, navigation}) => {
     const diets = [];
     let count = 100;
     for(let diet of recipe.diets) {
-      diets.push(<Text key={count} style={{...styles.tagText, marginRight: 10}}>{diet}</Text>);
+      diets.push(<Text key={count} style={{...styles.tagText, marginRight: 10, marginBottom: 5}}>{diet}</Text>);
       count++;
     }
     return (
       <View style={{flex: 1}}>
           <Text style={styles.sectionHeader}>Diets</Text>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
             {diets}
           </View>
       </View>
@@ -89,13 +100,13 @@ const RecipeScreen = ({route, navigation}) => {
     const cuisines = [];
     let count = 200;
     for(let cuisine of recipe.cuisines) {
-      cuisines.push(<Text key={count} style={{...styles.tagText, marginLeft: 10}}>{cuisine}</Text>);
+      cuisines.push(<Text key={count} style={{...styles.tagText, marginLeft: 10, marginBottom: 5}}>{cuisine}</Text>);
       count++;
     }
     return (
       <View style={{flex: 1}}>
           <Text style={{...styles.sectionHeader, textAlign: 'right'}}>Cuisines</Text>
-          <View style={{flexDirection: 'row', alignSelf: 'flex-end'}}>
+          <View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-end'}}>
             {cuisines}
           </View>
       </View>
@@ -105,10 +116,14 @@ const RecipeScreen = ({route, navigation}) => {
   const getNutrition = (name) => {
     const nutrient = recipe.nutrition.nutrients.find((val) => val.name === name);
     if(nutrient) {
-      return (<Text style={styles.listRecipeMetaText}>{name + ': ' + nutrient.amount + '' + nutrient.unit}</Text>)
+      return (<Text style={styles.listRecipeMetaText}>{name + ': ' + nutrient.amount + ' ' + nutrient.unit}</Text>)
     } else {
       return;
     }
+  }
+
+  const addToMealPlan = () => {
+    updateMealPlan(sessionData.email, recipe);
   }
 
   return (
@@ -122,16 +137,20 @@ const RecipeScreen = ({route, navigation}) => {
           <Ionicons name='arrow-back-circle' size={36} color={MyTheme.colors.primary}/>
         </TouchableOpacity>
         <Text style={styles.headerText}>{recipe.title}</Text>
-        {loggedIn &&
+        {sessionData.loggedIn && !resultState.loading &&
         <TouchableOpacity
-          onPress={() => 
-            navigation.goBack()
-            }
+          onPress={addToMealPlan}
         >
           <Entypo name='add-to-list' size={30} color={MyTheme.colors.primary}/>
         </TouchableOpacity>
         }
       </View>
+      {resultState.loading &&
+      <View style={{marginVertical: 20}}>
+        <ActivityIndicator size='large' color={MyTheme.colors.primary}/>
+      </View>
+      }
+      {!resultState.loading &&
       <ScrollView style={styles.scrollContainer}>
         {/* Image */}
         <Image
@@ -166,11 +185,14 @@ const RecipeScreen = ({route, navigation}) => {
           {renderIngredients()}
         </View>
         {/* Instructions */}
+        {recipe.analyzedInstructions.length > 0 &&
         <View>
           <Text style={styles.sectionHeader}>Instructions</Text>
           {renderInstructions()}
         </View>
+        }
       </ScrollView>
+      }
     </SafeAreaView>
   );
 
@@ -178,7 +200,7 @@ const RecipeScreen = ({route, navigation}) => {
 
 const styles = StyleSheet.create({
   header: {
-    margin: 10,
+    margin: 15,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -193,7 +215,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContainer: {
-    margin: 10,
+    margin: 15,
   },
   listRecipeImage: {
     width: '100%',

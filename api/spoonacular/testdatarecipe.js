@@ -3486,7 +3486,8 @@ export const testdaterecipe = {
   "summary": "Indian Butter Chicken might be just the <b>Indian</b> recipe you are searching for. For <b>12 cents per serving</b>, this recipe <b>covers 1%</b> of your daily requirements of vitamins and minerals. One serving contains <b>19 calories</b>, <b>1g of protein</b>, and <b>1g of fat</b>. 7 people have tried and liked this recipe. If you have butter, tomatoes, chicken broth, and a few other ingredients on hand, you can make it. From preparation to the plate, this recipe takes roughly <b>45 minutes</b>. It is a good option if you're following a <b>gluten free</b> diet. All things considered, we decided this recipe <b>deserves a spoonacular score of 8%</b>. This score is very bad (but still fixable). Try <a href=\"https://spoonacular.com/recipes/indian-butter-chicken-for-two-683387\">Indian Butter Chicken for Two</a>, <a href=\"https://spoonacular.com/recipes/indian-butter-chicken-dip-627469\">Indian Butter Chicken Dip</a>, and <a href=\"https://spoonacular.com/recipes/indian-butter-chicken-522967\">Indian Butter Chicken</a> for similar recipes.",
   "cuisines": [
       "Indian",
-      "Asian"
+      "Asian",
+      "Continental"
   ],
   "dishTypes": [
       "antipasti",
@@ -3497,7 +3498,8 @@ export const testdaterecipe = {
       "hor d'oeuvre"
   ],
   "diets": [
-      "gluten free"
+      "gluten free",
+      "vegetarian",
   ],
   "occasions": [],
   "winePairing": {

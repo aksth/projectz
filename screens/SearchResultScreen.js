@@ -1,11 +1,11 @@
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { MyTheme } from '../styles/theme';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { searchRecipes } from '../api/spoonacular/recipes';
 import RecipeList from '../components/RecipeList';
-import { searchResponse } from '../api/spoonacular/testdata';
+//import { searchResponse } from '../api/spoonacular/testdata';
 
 const SearchResultScreen = ({route, navigation}) => {
 
@@ -23,15 +23,15 @@ const SearchResultScreen = ({route, navigation}) => {
   
   const [searchParams, setSearchParams] = useState(route.params.searchParams);
 
-  const [result, setResult] = useState(searchResponse);
-    
+  const [result, setResult] = useState([]);
+  
   useEffect(() => {
-    /* setResultState({loading: true, success: false, error: false});
+    setResultState({loading: true, success: false, error: false});
     searchRecipes({...searchParams, offset: pagination.offset}, (data) => {
       setResultState({loading: false, success: true, error: false});
       setResult(data.results);
       setPagination({...pagination, totalResults: data.totalResults})
-    }); */
+    });
   }, []);
 
   return (
@@ -45,7 +45,7 @@ const SearchResultScreen = ({route, navigation}) => {
         >
           <Ionicons name='arrow-back-circle' size={36} color={MyTheme.colors.primary}/>
         </TouchableOpacity>
-        <Text style={styles.headerText}>{pagination.totalResults} results found...</Text>
+        <Text style={styles.headerText}>{resultState.loading ? 'searching...' : pagination.totalResults + ' results found...'}</Text>
       </View>
       <RecipeList recipes={result} loading={resultState.loading} showHeader={false}/>
     </SafeAreaView>

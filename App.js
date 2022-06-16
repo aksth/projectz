@@ -14,6 +14,7 @@ import { initializeDb } from './firebase';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { saveToStore } from './storage/store';
+import * as Analytics from 'expo-firebase-analytics';
 
 TouchableOpacity.defaultProps = {
   activeOpacity: 0.7,
@@ -35,6 +36,8 @@ export default function App() {
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
+  const navigationRef = useRef();
+  const routeNameRef = useRef();
 
   useEffect(() => {
 
@@ -64,7 +67,23 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <StatusBar backgroundColor={MyTheme.colors.background} />
-      <NavigationContainer theme={MyTheme}>
+      <NavigationContainer theme={MyTheme} ref={navigationRef} 
+      onReady={() =>
+        (routeNameRef.current = navigationRef.current.getCurrentRoute().name)
+      }
+      onStateChange={ async () => {
+        const previousRouteName = routeNameRef.current;
+        const currentRouteName = navigationRef.current.getCurrentRoute().name;
+        if (previousRouteName !== currentRouteName) {
+          await Analytics.logEvent("screen_view", {
+            screen_name: currentRouteName,
+            screen_class: currentRouteName,
+          });
+        }
+        // Save the current route name for later comparison
+        routeNameRef.current = currentRouteName;
+      }}
+      >
         <Tab.Navigator
           screenOptions={({ route }) => ({
             headerShown: false,

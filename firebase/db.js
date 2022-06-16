@@ -16,7 +16,7 @@ function getUserById(id) {
   const reference = ref(db, 'users/' + id);
   onValue(reference, (snapshot) => {
     const data = snapshot.val();
-    console.log(data);
+    //console.log(data);
   }, { onlyOnce: true });
 }
 

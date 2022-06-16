@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "149811381771",
+    "firebase_url": "https://projectz-5f4d9-default-rtdb.firebaseio.com",
+    "project_id": "projectz-5f4d9",
+    "storage_bucket": "projectz-5f4d9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:149811381771:android:6bd66d36638a8b3a8be90e",
+        "android_client_info": {
+          "package_name": "com.swifeen.foodapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "149811381771-9alt42smf1ct6ukh5323iiv3pe5hmtji.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBifNUODDCjabbKtfug1Mk3uJLbl9BfonA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "149811381771-9alt42smf1ct6ukh5323iiv3pe5hmtji.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

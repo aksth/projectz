@@ -7,7 +7,7 @@ export const searchRecipes = async (searchParams, callback) => {
     { 
       params: {...searchParams, number: 1, addRecipeNutrition: true},
     });
-    console.log(response.data);
+    //console.log(response.data);
     callback(response.data);
   } catch (err) {
     console.log(err);

@@ -139,7 +139,7 @@ function getMealPlan(email, callback) {
         );
       } else {
         console.log(
-          "user by email doesn't exist! User record is needed first to update one."
+          "user by email doesn't exist! User record is needed first to get the meal plan."
         );
       }
     })

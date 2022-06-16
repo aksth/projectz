@@ -37,6 +37,7 @@ function HomeScreen() {
   const [pagination, setPagination] = useState({
     currentPage: 1,
     totalResults: 0,
+    end:false,
   });
 
   useEffect(() => {
@@ -64,9 +65,11 @@ function HomeScreen() {
         sort: 'random',
         offset: ((pagination.currentPage - 1) * 10)
       }, (data) => {
-        setRandomRecipes([...randomRecipes, ...data.results]);
+        const newResult = [...randomRecipes, ...data.results]
+        setRandomRecipes(newResult);
         setResultState({loading: false, success: true, error: false});
-        setPagination({currentPage: pagination.currentPage + 1, totalResults: data.totalResults})
+        const end = newResult.length >= pagination.totalResults;
+        setPagination({currentPage: pagination.currentPage + 1, totalResults: data.totalResults, end: end})
       });
     } catch (err) {
       console.log(err);
@@ -97,7 +100,7 @@ function HomeScreen() {
   return (
     <SafeAreaView style={styles.screenContainer} >
       <View>
-        <RecipeList recipes={randomRecipes} loading={resultState.loading} showHeader={true} onLoadMore={loadMore}/>
+        <RecipeList recipes={randomRecipes} loading={resultState.loading} showHeader={true} onLoadMore={loadMore} end={pagination.end}/>
       </View>
     </SafeAreaView>
   );

@@ -1,4 +1,5 @@
 import api from './api';
+import Toast from 'react-native-root-toast';
 
 export const searchRecipes = async (searchParams, callback) => {
   //await new Promise(r => setTimeout(r, 5000));
@@ -11,6 +12,13 @@ export const searchRecipes = async (searchParams, callback) => {
     callback(response.data);
   } catch (err) {
     console.log(err);
+    if((err.response.status) === 402) {
+      Toast.show(`Quota for free API exausted! Contact the admin!`, {
+        duration: Toast.durations.SHORT,
+        animation: true,
+        hideOnPress: true,
+      });
+    }
     //callback(response.data);
   }
 };
@@ -25,6 +33,13 @@ export const getRecipeById = async (id, callback) => {
     callback(response.data);
   } catch (err) {
     console.log(err);
+    if((err.response.status) === 402) {
+      Toast.show(`Quota for free API exausted! Contact the admin!`, {
+        duration: Toast.durations.SHORT,
+        animation: true,
+        hideOnPress: true,
+      });
+    }
     //callback(response.data);
   }
 };
@@ -40,6 +55,13 @@ export const getRandomRecipes = async (callback) => {
     callback(response.data);
   } catch (err) {
     console.log(err);
+    if((err.response.status) === 402) {
+      Toast.show(`Quota for free API exausted! Contact the admin!`, {
+        duration: Toast.durations.SHORT,
+        animation: true,
+        hideOnPress: true,
+      });
+    }
     //callback(response.data);
   }
 };

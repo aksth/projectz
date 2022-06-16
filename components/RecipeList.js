@@ -64,7 +64,11 @@ const RecipeList = (props) => {
   }
 
   const loadMore = () => {
-    props.onLoadMore();
+    if(props.end) {
+      return;
+    } else {
+      props.onLoadMore();
+    }
   }
 
   return (

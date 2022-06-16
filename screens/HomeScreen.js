@@ -2,21 +2,29 @@ import { View, StyleSheet } from 'react-native';
 import { useState, useEffect } from 'react';
 import { MyTheme } from '../styles/theme';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { searchResponse } from '../api/spoonacular/testdata';
+//import { searchResponse } from '../api/spoonacular/testdata';
 import RecipeList from '../components/RecipeList';
+import { searchRecipes } from '../api/spoonacular/recipes';
 
 function HomeScreen() {
 
-  const [randomRecipes, setRandomRecipes] = useState(searchResponse);
+  const [randomRecipes, setRandomRecipes] = useState([]);
+  
+  const [resultState, setResultState] = useState({
+    loading: false,
+    success: true,
+    error: false,
+  });
 
   useEffect(() => {
     try {
-      /* searchRecipes({
+      setResultState({loading: true, success: false, error: false});
+      searchRecipes({
         sort: 'random',
-        number: 2,
       }, (data) => {
         setRandomRecipes(data.results);
-      }); */
+        setResultState({loading: false, success: true, error: false});
+      });
     } catch (err) {
       console.log(err);
     }
@@ -25,7 +33,7 @@ function HomeScreen() {
   return (
     <SafeAreaView style={styles.screenContainer} >
       <View>
-        <RecipeList recipes={randomRecipes} loading={false} showHeader={true}/>
+        <RecipeList recipes={randomRecipes} loading={resultState.loading} showHeader={true}/>
       </View>
     </SafeAreaView>
   );

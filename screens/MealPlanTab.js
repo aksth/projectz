@@ -59,12 +59,16 @@ export default function MealPlanTab({route, navigation}) {
       }
       setMealPlan(arr);
       setCumulativeData({
-        calories: calories,
-        protein: protein,
-        carbohydrates: carbohydrates,
-        fat: fat,
+        calories: round(calories, 2),
+        protein: round(protein, 2),
+        carbohydrates: round(carbohydrates, 2),
+        fat: round(fat, 2),
       })
     });
+  }
+
+  const round = (value, decimals) => {
+    return Number(Math.round(value + "e" + decimals) + "e-" + decimals);
   }
 
   const getNutrition = (recipe, name) => {

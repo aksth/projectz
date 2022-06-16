@@ -11,7 +11,6 @@ const SearchResultScreen = ({route, navigation}) => {
 
   const [pagination, setPagination] = useState({
     currentPage: 1,
-    offset: 0,
     totalResults: 0,
   });
 
@@ -26,13 +25,30 @@ const SearchResultScreen = ({route, navigation}) => {
   const [result, setResult] = useState([]);
   
   useEffect(() => {
-    setResultState({loading: true, success: false, error: false});
-    searchRecipes({...searchParams, offset: pagination.offset}, (data) => {
-      setResultState({loading: false, success: true, error: false});
-      setResult(data.results);
-      setPagination({...pagination, totalResults: data.totalResults})
-    });
+    try{
+      setResultState({loading: true, success: false, error: false});
+      searchRecipes({...searchParams, offset: ((pagination.currentPage - 1) * 10)}, (data) => {
+        setResultState({loading: false, success: true, error: false});
+        setResult([...result, ...data.results]);
+        setPagination({currentPage: pagination.currentPage + 1, totalResults: data.totalResults})
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }, []);
+
+  const loadMore = () => {
+    try {
+      setResultState({loading: true, success: false, error: false});
+      searchRecipes({...searchParams, offset: ((pagination.currentPage - 1) * 10)}, (data) => {
+        setResult([...result, ...data.results]);
+        setResultState({loading: false, success: true, error: false});
+        setPagination({currentPage: pagination.currentPage + 1, totalResults: data.totalResults})
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <SafeAreaView style={styles.screenContainer}>
@@ -47,7 +63,7 @@ const SearchResultScreen = ({route, navigation}) => {
         </TouchableOpacity>
         <Text style={styles.headerText}>{resultState.loading ? 'searching...' : pagination.totalResults + ' results found...'}</Text>
       </View>
-      <RecipeList recipes={result} loading={resultState.loading} showHeader={false}/>
+      <RecipeList recipes={result} loading={resultState.loading} showHeader={false} onLoadMore={loadMore}/>
     </SafeAreaView>
   );
 

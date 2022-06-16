@@ -34,6 +34,11 @@ function HomeScreen() {
     error: false,
   });
 
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    totalResults: 0,
+  });
+
   useEffect(() => {
 
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
@@ -57,9 +62,11 @@ function HomeScreen() {
       setResultState({loading: true, success: false, error: false});
       searchRecipes({
         sort: 'random',
+        offset: ((pagination.currentPage - 1) * 10)
       }, (data) => {
-        setRandomRecipes(data.results);
+        setRandomRecipes([...randomRecipes, ...data.results]);
         setResultState({loading: false, success: true, error: false});
+        setPagination({currentPage: pagination.currentPage + 1, totalResults: data.totalResults})
       });
     } catch (err) {
       console.log(err);
@@ -71,10 +78,26 @@ function HomeScreen() {
     };
   }, []);
 
+  const loadMore = () => {
+    try {
+      setResultState({loading: true, success: false, error: false});
+      searchRecipes({
+        sort: 'random',
+        offset: ((pagination.currentPage - 1) * 10)
+      }, (data) => {
+        setRandomRecipes([...randomRecipes, ...data.results]);
+        setResultState({loading: false, success: true, error: false});
+        setPagination({currentPage: pagination.currentPage + 1, totalResults: data.totalResults})
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <SafeAreaView style={styles.screenContainer} >
       <View>
-        <RecipeList recipes={randomRecipes} loading={resultState.loading} showHeader={true}/>
+        <RecipeList recipes={randomRecipes} loading={resultState.loading} showHeader={true} onLoadMore={loadMore}/>
       </View>
     </SafeAreaView>
   );

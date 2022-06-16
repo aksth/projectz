@@ -5,7 +5,7 @@ export const searchRecipes = async (searchParams, callback) => {
   try{
     const response = await api.get('/recipes/complexSearch', 
     { 
-      params: {...searchParams, number: 1, addRecipeNutrition: true},
+      params: {...searchParams, number: 10, addRecipeNutrition: true},
     });
     //console.log(response.data);
     callback(response.data);

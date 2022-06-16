@@ -29,6 +29,7 @@ export default function MealPlanTab({route, navigation}) {
           loggedIn: values.loggedIn,
           email: values.email,
         });
+        refreshMealPlan();
       });
     });
     // Return the function to unsubscribe from the event so it gets removed on unmount
@@ -77,7 +78,7 @@ export default function MealPlanTab({route, navigation}) {
       return (
         <View style={{flexDirection: 'column', flex: 1, flexGrow: 1}}>
           <Text style={styles.mealItemNutrientText}>{name.substring(0,3) + ':'}</Text>
-          <Text>{nutrient.amount + ' ' + nutrient.unit.substring(0,1)}</Text>
+          <Text style={{fontSize: 13}}>{nutrient.amount + ' ' + nutrient.unit.substring(0,1)}</Text>
         </View>
       );
     } else {
@@ -208,7 +209,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   mealItemNutrientText: {
-    fontSize: 14,
+    fontSize: 13,
   },
   aggregateLabel: {
     fontSize: 18,

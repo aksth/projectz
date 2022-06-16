@@ -29,15 +29,15 @@ export default function MealPlanTab({route, navigation}) {
           loggedIn: values.loggedIn,
           email: values.email,
         });
-        refreshMealPlan();
+        refreshMealPlan(values.email);
       });
     });
     // Return the function to unsubscribe from the event so it gets removed on unmount
     return unsubscribe;
   }, [navigation]);
 
-  const refreshMealPlan = () => {
-    getMealPlan(sessionData.email, (mealPlan) => {
+  const refreshMealPlan = (email) => {
+    getMealPlan(sessionData.email ? sessionData.email : email, (mealPlan) => {
       const arr = [];
       let calories = 0;
       let protein = 0;

@@ -47,13 +47,14 @@ function SettingsTab({route, navigation}) {
     <SafeAreaView style={styles.screenContainer}>
       <View>
         {state.loggedIn &&
-        <View>
+        <View style={{marginBottom: 20}}>
           <Image
             style={{width: 100, height: 100, alignSelf: 'center', borderRadius: 10}}
             source={{uri: decodeURIComponent(state.photoUrl)}}
           />
           <Text style={{alignSelf: 'center'}}>Full Name: {state.fullName}</Text>
           <Text style={{alignSelf: 'center'}}>Email: {state.email}</Text>
+          <Text>{state.exponentPushToken}</Text>
         </View>        
         }
         {!state.loggedIn &&

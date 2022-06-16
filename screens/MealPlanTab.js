@@ -4,7 +4,7 @@ import { Text, View, StyleSheet, TouchableOpacity, FlatList, Pressable, Image } 
 import { getAllValues } from '../storage/store';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MyTheme } from '../styles/theme';
-import { getMealPlan } from '../firebase/db';
+import { getMealPlan, deleteMealPlanItem } from '../firebase/db';
 import { getRecipeImageSmall } from '../api/spoonacular/recipes';
 
 export default function MealPlanTab({route, navigation}) {
@@ -91,7 +91,9 @@ export default function MealPlanTab({route, navigation}) {
         <Pressable
           onPress={() => {}}
           onLongPress={() => {
-            console.log('long pressed!');
+            deleteMealPlanItem(sessionData.email, item.id, () => {
+              refreshMealPlan();
+            })
           }}
           style={({ pressed }) => [
             {

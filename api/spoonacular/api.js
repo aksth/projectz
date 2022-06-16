@@ -11,10 +11,9 @@ api.interceptors.request.use(
     return config;
   },
   (err) => {
-    // called when error
+    // Errror
     return Promise.reject(err);
   }
 );
 
 export default api;
-

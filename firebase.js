@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-
+import { googleApiKey } from './apikeys';
 // Optionally import the services that you want to use
 //import {...} from "firebase/auth";
 //import {...} from "firebase/database";
@@ -9,7 +9,7 @@ import { initializeApp } from 'firebase/app';
 
 // Initialize Firebase
 const firebaseConfig = {
-  apiKey: "googleapikeyremoved",
+  apiKey: googleApiKey,
   authDomain: "projectz-5f4d9.firebaseapp.com",
   databaseURL: "https://projectz-5f4d9-default-rtdb.firebaseio.com",
   projectId: "projectz-5f4d9",

@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import { spoonacularApiKey } from '../../apikeys';
+
 const api = axios.create({
   baseURL: 'https://api.spoonacular.com',
 });
@@ -7,7 +9,7 @@ const api = axios.create({
 api.interceptors.request.use(
   async (config) => {
     config.headers.Accept = 'application/json';
-    config.params = {...config.params, apiKey: 'spoonacularapikeyremoved'}
+    config.params = {...config.params, apiKey: spoonacularApiKey}
     return config;
   },
   (err) => {

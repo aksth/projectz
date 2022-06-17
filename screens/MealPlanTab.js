@@ -6,6 +6,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MyTheme } from '../styles/theme';
 import { getMealPlan, deleteMealPlanItem } from '../firebase/db';
 import { getRecipeImageSmall } from '../api/spoonacular/recipes';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function MealPlanTab({route, navigation}) {
 
@@ -22,6 +23,19 @@ export default function MealPlanTab({route, navigation}) {
     fat: 0,
   });
 
+  /* useFocusEffect(
+    React.useCallback(() => {
+      getAllValues((values) => {
+        setSessionData({
+          loggedIn: values.loggedIn,
+          email: values.email,
+        });
+        //refreshMealPlan(values.email);
+      });
+      return;
+    }, [])
+  ); */
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getAllValues((values) => {
@@ -37,7 +51,12 @@ export default function MealPlanTab({route, navigation}) {
   }, [navigation]);
 
   const refreshMealPlan = (email) => {
+    console.log("refreshMealPlan")
+    if(!email) {
+      return;
+    }
     getMealPlan(sessionData.email ? sessionData.email : email, (mealPlan) => {
+      if(!mealPlan) return;
       const arr = [];
       let calories = 0;
       let protein = 0;
@@ -58,6 +77,7 @@ export default function MealPlanTab({route, navigation}) {
           arr.push(meal);
         }
       }
+      console.log("setting meal plan...");
       setMealPlan(arr);
       setCumulativeData({
         calories: round(calories, 2),
@@ -97,7 +117,7 @@ export default function MealPlanTab({route, navigation}) {
           onPress={() => {}}
           onLongPress={() => {
             deleteMealPlanItem(sessionData.email, item.id, () => {
-              refreshMealPlan();
+              refreshMealPlan(sessionData.email);
             })
           }}
           style={({ pressed }) => [
@@ -133,11 +153,15 @@ export default function MealPlanTab({route, navigation}) {
     <SafeAreaView style={styles.screenContainer}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Meal Plan</Text>
+        {sessionData.loggedIn &&
         <TouchableOpacity
-          onPress={refreshMealPlan}
+          onPress={() => {
+            refreshMealPlan(sessionData.email)
+          }}
         >
           <MaterialCommunityIcons name='refresh' size={30} color={MyTheme.colors.primary}/>
         </TouchableOpacity>
+        }
       </View>
 
       { sessionData.loggedIn &&

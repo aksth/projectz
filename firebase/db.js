@@ -124,16 +124,21 @@ function getMealPlan(email, callback) {
   get(existingEmailRef)
     .then((snapshot) => {
       if (snapshot.exists()) {
-        console.log('user by email exists!');
-        console.log('Getting meal plan for ' + email);
+        //console.log('user by email exists!');
+        //console.log('Getting meal plan for ' + email);
         const id = Object.keys(snapshot.val())[0];
         const reference = ref(db, 'users/' + id + '/mealplan');
         onValue(
           reference,
           (snapshot2) => {
-            const data = snapshot2.val();
-            //console.log(data);
-            callback(data);
+            if(snapshot2.exists()) {
+              const data = snapshot2.val();
+              //console.log(data);
+              callback(data);
+            } else {
+              console.log("No meal plan found for given user.")
+            }
+            
           },
           { onlyOnce: true }
         );

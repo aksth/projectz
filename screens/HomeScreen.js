@@ -161,6 +161,7 @@ async function registerForPushNotificationsAsync() {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log("expo push token value:");
     console.log(token);
     await saveToStore('exponentPushToken', token);
   } else {

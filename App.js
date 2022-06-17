@@ -57,6 +57,7 @@ export default function App() {
         <Tab.Navigator
           screenOptions={({ route }) => ({
             headerShown: false,
+            tabBarStyle: { height: 55, paddingBottom: 5, paddingTop: 5},
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
               if (route.name === 'Home') {

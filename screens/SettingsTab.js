@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { loginWithFacebook, signOutFacebook } from '../auth/fb';
-import { getValueFromStore, getAllValues } from '../storage/store';
+import { getAllValues } from '../storage/store';
 import { useFocusEffect } from '@react-navigation/native';
 import { writeLoginDataToDb } from '../firebase/db';
 
